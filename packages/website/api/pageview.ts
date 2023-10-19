@@ -8,7 +8,7 @@ export interface PageViewData {
 export const getPageview = async (pathname: string): Promise<PageViewData> => {
   try {
     const { statusCode, data } = await fetch(
-      `/api/public/viewer`,
+      `${process.env.BaseInEnv}/api/public/viewer`,
       {method: "GET"}
     ).then((res) => res.json());
 
@@ -37,7 +37,7 @@ export const updatePageview = async (
 
   try {
     const { statusCode, data } = await fetch(
-      `/api/public/viewer?isNew=${!hasVisited}&isNewByPath=${!hasVisitedCurrentPath}`,
+      `${process.env.BaseInEnv}/api/public/viewer?isNew=${!hasVisited}&isNewByPath=${!hasVisitedCurrentPath}`,
       { method: "POST" }
     ).then((res) => res.json());
 

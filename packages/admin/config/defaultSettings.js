@@ -14,7 +14,6 @@ const Settings = {
   splitMenus: false,
   // headerRender: false,
   pwa: true,
-  logo: '/logo.svg',
   iconfontUrl: '',
 };
 export default Settings;

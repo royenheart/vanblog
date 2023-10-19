@@ -15,6 +15,7 @@ import { UserProvider } from './provider/user/user.provider';
 import { SettingProvider } from './provider/setting/setting.provider';
 import { WebsiteProvider } from './provider/website/website.provider';
 import { initJwt } from './utils/initJwt';
+import { BASE_PREFIX } from './utils/loadBasePath';
 
 async function bootstrap() {
   const jwtSecret = await initJwt();
@@ -51,17 +52,25 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('VanBlog API Reference')
-    .setDescription('API Token 请在后台设置页面获取，请添加到请求头的 token 字段中进行鉴权。')
+    .setDescription(
+      'API Token 请在后台设置页面获取，请添加到请求头的 token 字段中进行鉴权。',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  document.paths = Object.entries(document.paths).reduce(
+    (acc, [key, value]) => {
+      acc[`${BASE_PREFIX}${key}`] = value;
+      return acc;
+    },
+    {},
+  );
   SwaggerModule.setup('swagger', app, document);
   await app.listen(3000);
 
   const websiteProvider = app.get(WebsiteProvider);
 
   websiteProvider.init();
-
 
   const initProvider = app.get(InitProvider);
   initProvider.initVersion();

@@ -48,6 +48,8 @@ Vanblog 分为以下几个部分，构建后将整合到一个 `docker` 容器�
 ├── entrypoint.sh # 容器入口文件
 ├── lerna.json # lerna 配置
 ├── LICENSE # 开源协议
+├── caddyTemplate.json # Caddy 反代配置文件
+├── caddyPrettyTemplate.json # Caddy 反代配置文件（更易读）
 ├── package.json
 ├── packages # 代码主体
 |  ├── admin # 后台前端代码
@@ -155,6 +157,27 @@ pnpm docs:dev
 
 直接在根目录用 `Dockerfile` 打包就行，具体看下面第二点。
 
+### Caddy 反代设置
+
+Dockerfile 默认暴露 Caddy 服务的 80 端口，Caddy 配置文件为 `caddyTemplate.json`，构建时会拷贝进去。
+
+若需要对 Caddy 配置进行修改（比如调整反代路径等），推荐修改更易读的 `caddyPrettyTemplate.json` 文件，然后可以使用如下 python 脚本生成 `caddyTemplate.json` 文件：
+
+```python
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
+import json
+import sys
+
+file = sys.argv[1]
+with open(file, 'r') as f:
+        raw = f.read()
+        json_str = json.loads(raw)
+        json_formatted_str = json.dumps(json_str)
+        print(json_formatted_str.replace(' ', ''))
+```
+
 ### act（作者自用）
 
 我一般会用 [act](https://github.com/nektos/act) 来做验证镜像，act 可以在本地运行 `Github Actions`。
@@ -171,7 +194,16 @@ pnpm build:test
 ```bash
 # 这个build server 是第一次打包镜像拿数据的，不写也行，那就得等启动容器后增量渲染生效了。
 VAN_BLOG_BUILD_SERVER="https://some.vanblog-server.com"
-docker build --build-arg VAN_BLOG_BUILD_SERVER=$VAN_BLOG_BUILD_SERVER -t mereith/van-blog:test .
+# 设置访问前缀，在进行反代并设置了 /xxx 路径时使用，同时 docker-compose.yml 中需要一致，不然会出现跳转问题。
+# 可以不写
+VAN_BLOG_BASE_P="/xxx"
+# 设置镜像版本，可以不写
+VAN_BLOG_VERSIONS="xxx"
+docker build \
+  --build-arg VAN_BLOG_BASE_P=$VAN_BLOG_BASE_P \
+  --build-arg VAN_BLOG_BUILD_SERVER=$VAN_BLOG_BUILD_SERVER \
+  --build-arg VAN_BLOG_VERSIONS=$VAN_BLOG_VERSIONS \
+  -t mereith/van-blog:$VAN_BLOG_VERSIONS .
 ```
 
 ## 文档发版

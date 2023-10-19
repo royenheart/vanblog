@@ -26,7 +26,7 @@ const LinkPage = (props: LinkPageProps) => {
       logo = props.authorCardProps.logo || "";
     }
     if (logo == "") {
-      logo = `${url}/logo.svg`;
+      logo = `${url}/${process.env.BaseInEnv}/logo.svg`;
     }
     return logo;
   }, [props, url]);
@@ -41,7 +41,7 @@ const LinkPage = (props: LinkPageProps) => {
 **[本站信息]**
 > 名称： ${props.layoutProps.siteName}<br/>
 > 简介： ${props.layoutProps.description}<br/>
-> 网址： [${url}](${url})<br/>
+> 网址： [${url}/${process.env.BaseInEnv}](${url}/${process.env.BaseInEnv})<br/>
 > 头像： [${logo}](${logo})
 `;
   return (

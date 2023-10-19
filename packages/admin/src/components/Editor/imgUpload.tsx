@@ -1,12 +1,12 @@
 import { copyImgLink, getImgLink } from '@/pages/Static/img/tools';
 import { getClipboardContents } from '@/services/van-blog/clipboard';
 import { message } from 'antd';
-import { BytemdPlugin } from 'bytemd';
+import type { BytemdPlugin } from 'bytemd';
 export const uploadImg = async (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
   try {
-    const res = await fetch('/api/admin/img/upload?withWaterMark=true', {
+    const res = await fetch(BASE_PREFIX + '/api/admin/img/upload?withWaterMark=true', {
       method: 'POST',
       body: formData,
       headers: {

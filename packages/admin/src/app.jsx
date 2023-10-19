@@ -203,7 +203,7 @@ export const layout = ({ initialState, setInitialState }) => {
       }
     },
     links: [
-      <a key="mainSiste" rel="noreferrer" target="_blank" href={'/'}>
+      <a key="mainSiste" rel="noreferrer" target="_blank" href={`${BASE_PREFIX}/`}>
         <HomeOutlined />
         <span>主站</span>
       </a>,

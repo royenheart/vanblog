@@ -46,8 +46,8 @@ export function Title(props: {
           className="flex items-center"
           href={
             props.type === "about"
-              ? "/admin/editor?type=about"
-              : `/admin/editor?type=article&id=${props.id}`
+              ? `${process.env.BaseInEnv}/admin/editor?type=about`
+              : `${process.env.BaseInEnv}/admin/editor?type=article&id=${props.id}`
           }
           target="_blank"
         >

@@ -41,7 +41,7 @@ const columns = [
       <a
         key="viewCategory"
         onClick={() => {
-          window.open(`/category/${encodeQuerystring(record.name)}`, '_blank');
+          window.open(`${BASE_PREFIX}/category/${encodeQuerystring(record.name)}`, '_blank');
         }}
       >
         查看

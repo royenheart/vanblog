@@ -224,7 +224,7 @@ const ImgPage = () => {
 
               fetchData();
             }}
-            url="/api/admin/img/upload?withWaterMark=true"
+            url={`${BASE_PREFIX}/api/admin/img/upload?withWaterMark=true`}
             accept=".png,.jpg,.jpeg,.webp,.jiff,.gif"
           />
           <UploadBtn
@@ -241,7 +241,7 @@ const ImgPage = () => {
 
               fetchData();
             }}
-            url="/api/admin/img/upload?withWaterMark=true"
+            url={`${BASE_PREFIX}/api/admin/img/upload?withWaterMark=true`}
             accept=".png,.jpg,.jpeg,.webp,.jiff,.gif"
           />
         </Space>

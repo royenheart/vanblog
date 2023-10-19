@@ -115,7 +115,7 @@ export const getArticleByIdOrPathnameWithPassword = async (
   password: string
 ) => {
   try {
-    const url = `/api/public/article/${id}`;
+    const url = `${process.env.BaseInEnv}/api/public/article/${id}`;
     const res = await fetch(url, {
       method: "POST",
       headers: {

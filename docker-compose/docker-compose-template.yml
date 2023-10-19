@@ -5,6 +5,8 @@ services:
     image: vanblog_image
     restart: always
     environment:
+      # 设置路径前缀
+      VAN_BLOG_BASE_PATH: ""
       TZ: "Asia/Shanghai"
       # 邮箱地址，用于自动申请 https 证书
       EMAIL: vanblog_email

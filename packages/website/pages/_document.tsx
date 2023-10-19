@@ -6,7 +6,7 @@ export default function Document() {
   return (
     <Html className={getTheme(initTheme()).replace("auto-", "")} lang="zh">
       <Head>
-        <Script src="/initTheme.js" strategy="beforeInteractive" />
+        <Script src={`${process.env.BaseInEnv}/initTheme.js`} strategy="beforeInteractive" />
       </Head>
       <body>
         <Main />

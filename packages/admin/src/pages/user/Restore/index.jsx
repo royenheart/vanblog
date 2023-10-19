@@ -10,7 +10,7 @@ export default function () {
       style={{
         height: '100%',
         display: 'flex',
-        backgroundImage: `url('/background.svg')`,
+        backgroundImage: `url('${BASE_PREFIX}/background.svg')`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: '100%',
         backgroundColor: '#f0f2f5',

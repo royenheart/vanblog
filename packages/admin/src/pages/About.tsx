@@ -6,7 +6,7 @@ import { useModel } from 'umi';
 export default function (props) {
   const { initialState } = useModel('@@initialState');
   const version = useMemo(() => {
-    let v = initialState?.version || '获取中';
+    const v = initialState?.version || '获取中';
     return v;
   }, [initialState, history]);
 
@@ -22,7 +22,7 @@ export default function (props) {
               userSelect: 'none',
             }}
           >
-            <Image width={200} src="/logo.svg" alt="logo" preview={false} />
+            <Image width={200} src={`${BASE_PREFIX}/logo.svg`} alt="logo" preview={false} />
             <div
               style={{
                 fontSize: 26,
@@ -53,7 +53,7 @@ export default function (props) {
               >
                 更新日志
               </a>
-              <a target={'_blank'} rel="noreferrer" href="/swagger">
+              <a target={'_blank'} rel="noreferrer" href={`${BASE_PREFIX}/swagger`}>
                 API文档
               </a>
             </Space>

@@ -88,7 +88,7 @@ export default function (props: {
                 <a
                   className="w-full inline-block px-4 "
                   target="_blank"
-                  href={"/admin"}
+                  href={`${process.env.BaseInEnv}/admin`}
                 >
                   {"后台"}
                 </a>

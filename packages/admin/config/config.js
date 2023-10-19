@@ -5,11 +5,12 @@ import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
 const { REACT_APP_ENV } = process.env;
+const BASE_PATH = (process.env.BASE && process.env.BASE !== '') ? process.env.BASE : '';
 export default defineConfig({
   hash: true,
-  base: '/admin/',
+  base: process.env.EEE === 'production' ? BASE_PATH + '/admin/' : '/',
   devServer: { https: false, port: 3002 },
-  publicPath: process.env.EEE === 'production' ? '/admin/' : '/',
+  publicPath: process.env.EEE === 'production' ? BASE_PATH + '/admin/' : '/',
   antd: {},
   dva: {
     hmr: true,
@@ -18,6 +19,7 @@ export default defineConfig({
     // https://umijs.org/zh-CN/plugins/plugin-layout
     locale: false,
     siderWidth: 208,
+    logo: `${BASE_PATH}/logo.svg`,
     ...defaultSettings,
   },
   dynamicImport: {
@@ -35,6 +37,7 @@ export default defineConfig({
     // 只有设置为 variable， 才能使用 configProvide 动态设置主色调
     // https://ant.design/docs/react/customize-theme-variable-cn
     'root-entry-name': 'variable',
+    '@BASE_PREFIX': BASE_PATH,
   },
   // esbuild is father build tools
   // https://umijs.org/plugins/plugin-esbuild
@@ -60,4 +63,7 @@ export default defineConfig({
         { languages: ['css', 'json', 'html', 'javascript', 'typescript'] },
       ]);
   },
+  define: {
+    BASE_PREFIX: BASE_PATH
+  }
 });

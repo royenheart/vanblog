@@ -1,5 +1,4 @@
 import { Button, message } from "antd";
-
 import { getClipboardContents } from "@/services/van-blog/clipboard";
 
 export interface CopyUploadBtnProps {
@@ -26,7 +25,7 @@ export default function (props: CopyUploadBtnProps) {
 
     formData.append("file", fileObj);
 
-    return fetch("/api/admin/img/upload?withWaterMark=true", {
+    return fetch(BASE_PREFIX + "/api/admin/img/upload?withWaterMark=true", {
       method: "POST",
       headers: {
         token: localStorage.getItem("token") || "null",

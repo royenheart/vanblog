@@ -35,3 +35,6 @@ screenshot
 .eslintcache
 
 build
+
+# npm包
+package-lock.json

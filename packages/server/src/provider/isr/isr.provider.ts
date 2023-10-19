@@ -6,14 +6,24 @@ import { ArticleProvider } from '../article/article.provider';
 import { RssProvider } from '../rss/rss.provider';
 import { SettingProvider } from '../setting/setting.provider';
 import { SiteMapProvider } from '../sitemap/sitemap.provider';
+import { BASE_PREFIX } from 'src/utils/loadBasePath';
+import { url } from 'inspector';
 export interface ActiveConfig {
   postId?: number;
   forceActice?: boolean;
 }
 @Injectable()
 export class ISRProvider {
-  urlList = ['/', '/category', '/tag', '/timeline', '/about', '/link'];
-  base = 'http://127.0.0.1:3001/api/revalidate?path=';
+  base_prefix = BASE_PREFIX && BASE_PREFIX !== '' ? BASE_PREFIX : '/';
+  urlList = [
+    this.base_prefix,
+    `${BASE_PREFIX}/category`,
+    `${BASE_PREFIX}/tag`,
+    `${BASE_PREFIX}/timeline`,
+    `${BASE_PREFIX}/about`,
+    `${BASE_PREFIX}/link`,
+  ];
+  base = `http://127.0.0.1:3001/${BASE_PREFIX}/api/revalidate?path=`;
   logger = new Logger(ISRProvider.name);
   timer = null;
   constructor(
@@ -51,8 +61,8 @@ export class ISRProvider {
     this.logger.log('触发全量渲染完成！');
   }
   async activeAll(info?: string, delay?: number, activeConfig?: ActiveConfig) {
-    if (process.env["VANBLOG_DISABLE_WEBSITE"] === 'true') {
-      return ;
+    if (process.env['VANBLOG_DISABLE_WEBSITE'] === 'true') {
+      return;
     }
     if (this.timer) {
       clearTimeout(this.timer);
@@ -68,7 +78,7 @@ export class ISRProvider {
 
   async testConn() {
     try {
-      await axios.get(encodeURI(this.base + '/'));
+      await axios.get(encodeURI(this.base + this.base_prefix));
       return true;
     } catch {
       return false;
@@ -111,15 +121,21 @@ export class ISRProvider {
   ) {
     switch (type) {
       case 'category':
-        const categoryUrls = await this.sitemapProvider.getCategoryUrls();
+        const categoryUrls = (await this.sitemapProvider.getCategoryUrls()).map(
+          (url) => BASE_PREFIX + url,
+        );
         await this.activeUrls(categoryUrls, false);
         break;
       case 'page':
-        const pageUrls = await this.sitemapProvider.getPageUrls();
+        const pageUrls = (await this.sitemapProvider.getPageUrls()).map(
+          (url) => BASE_PREFIX + url,
+        );
         await this.activeUrls(pageUrls, false);
         break;
       case 'tag':
-        const tagUrls = await this.sitemapProvider.getTagUrls();
+        const tagUrls = (await this.sitemapProvider.getTagUrls()).map(
+          (url) => BASE_PREFIX + url,
+        );
         await this.activeUrls(tagUrls, false);
         break;
       case 'post':
@@ -129,11 +145,12 @@ export class ISRProvider {
             (u) => u !== `/post/${postId}`,
           );
           await this.activeUrls(
-            [`/post/${postId}`, ...urlsWithoutThisId],
+            [`${BASE_PREFIX}/post/${postId}`, ...urlsWithoutThisId],
             false,
           );
         } else {
-          await this.activeUrls(articleUrls, false);
+          const articleUrlsPrefix = articleUrls.map((url) => BASE_PREFIX + url);
+          await this.activeUrls(articleUrlsPrefix, false);
         }
         break;
     }
@@ -148,40 +165,40 @@ export class ISRProvider {
     const { article, pre, next } =
       await this.articleProvider.getByIdOrPathnameWithPreNext(id, 'list');
     // 无论是什么事件都先触发文章本身、标签和分类。
-    this.activeUrl(`/post/${id}`, true);
+    this.activeUrl(`${BASE_PREFIX}/post/${id}`, true);
     if (pre) {
-      this.activeUrl(`/post/${pre?.id}`, true);
+      this.activeUrl(`${BASE_PREFIX}/post/${pre?.id}`, true);
     }
     if (next) {
-      this.activeUrl(`/post/${next?.id}`, true);
+      this.activeUrl(`${BASE_PREFIX}/post/${next?.id}`, true);
     }
     const tags = article.tags;
     if (tags && tags.length > 0) {
       for (const each of tags) {
-        this.activeUrl(`/tag/${each}`, true);
+        this.activeUrl(`${BASE_PREFIX}/tag/${each}`, true);
       }
     }
     const category = article.category;
-    this.activeUrl(`/category/${category}`, true);
+    this.activeUrl(`${BASE_PREFIX}/category/${category}`, true);
 
     if (event == 'update' && beforeObj) {
       // 更新文档需要考虑更新之前的标签和分类。
       const tags = beforeObj.tags;
       if (tags && tags.length > 0) {
         for (const each of tags) {
-          this.activeUrl(`/tag/${each}`, true);
+          this.activeUrl(`${BASE_PREFIX}/tag/${each}`, true);
         }
       }
       const category = beforeObj.category;
-      this.activeUrl(`/category/${category}`, true);
+      this.activeUrl(`${BASE_PREFIX}/category/${category}`, true);
     }
 
     // 时间线、首页、标签页、tag 页
 
-    this.activeUrl(`/timeline`, true);
-    this.activeUrl(`/tag`, true);
-    this.activeUrl(`/category`, true);
-    this.activeUrl(`/`, true);
+    this.activeUrl(`${BASE_PREFIX}/timeline`, true);
+    this.activeUrl(`${BASE_PREFIX}/tag`, true);
+    this.activeUrl(`${BASE_PREFIX}/category`, true);
+    this.activeUrl(this.base_prefix, true);
     // 如果是创建或者删除需要重新触发 page 页面
     // 如果更改了 hidden 或者 private 也需要触发全部 page 页面
     // 干脆就都触发了。
@@ -194,13 +211,13 @@ export class ISRProvider {
   async activeAbout(info: string) {
     this.activeWithRetry(() => {
       this.logger.log(info);
-      this.activeUrl(`/about`, false);
+      this.activeUrl(`${BASE_PREFIX}/about`, false);
     }, info);
   }
   async activeLink(info: string) {
     this.activeWithRetry(() => {
       this.logger.log(info);
-      this.activeUrl(`/link`, false);
+      this.activeUrl(`${BASE_PREFIX}/link`, false);
     }, info);
   }
 

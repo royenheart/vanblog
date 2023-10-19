@@ -122,7 +122,7 @@ export class WalineProvider {
     const base = '../waline/node_modules/@waline/vercel/vanilla.js';
     if (this.ctx == null) {
       this.ctx = spawn('node', [base], {
-        env: {
+        env: { 
           ...process.env,
           ...this.env,
         },

@@ -248,7 +248,7 @@ export default function () {
                     onFinish={(info) => {
                       fetchData();
                     }}
-                    url={`/api/admin/customPage/upload?path=${path}`}
+                    url={`${BASE_PREFIX}/api/admin/customPage/upload?path=${path}`}
                     accept="*"
                     loading={uploadLoading}
                     plainText={true}
@@ -269,7 +269,7 @@ export default function () {
                     onFinish={(info) => {
                       fetchData();
                     }}
-                    url={`/api/admin/customPage/upload?path=${path}`}
+                    url={`${BASE_PREFIX}/api/admin/customPage/upload?path=${path}`}
                     accept="*"
                     loading={uploadLoading}
                   />
@@ -281,11 +281,11 @@ export default function () {
           key: 'view',
           label: '查看',
           onClick: () => {
-            window.open(`/c${path}`);
+            window.open(`${BASE_PREFIX}/c${path}`);
           },
         }] : [])
       ]}
-    ></Menu>
+     />
   );
   useEffect(() => {
     fetchData();
@@ -327,7 +327,7 @@ export default function () {
               if (type == "pipeline") {
                 window.open("https://vanblog.mereith.com/features/pipeline.html", "_blank")
               } else {
-                window.open('https://vanblog.mereith.com/feature/advance/customPage.html', "_blank");
+                window.open('https://vanblog.mereith.com/advanced/custom-page.html', "_blank");
               }
             }}
           >
@@ -418,7 +418,7 @@ export default function () {
                 />
               </div>
             </Spin>
-            <div className="divider-v"></div>
+            <div className="divider-v" />
           </>
         )}
         <Spin spinning={editorLoading}>

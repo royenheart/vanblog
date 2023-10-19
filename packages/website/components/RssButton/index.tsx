@@ -6,7 +6,7 @@ import RssLogo from "../RssLogo";
 export default function (props: { showAdminButton: boolean }) {
   const [url, setUrl] = useState("");
   useEffect(() => {
-    setUrl(`${location.protocol}//${location.host}/feed.xml`);
+    setUrl(`${location.protocol}//${location.host}/${process.env.BaseInEnv}/feed.xml`);
   }, [setUrl]);
   return (
     <div

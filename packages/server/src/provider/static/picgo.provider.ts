@@ -55,6 +55,9 @@ export class PicgoProvider {
   async saveFile(fileName: string, buffer: Buffer, type: StaticType) {
     const result = imageSize(buffer);
     const byteLength = buffer.byteLength;
+    const BASE: string = process.env.VAN_BLOG_BASE_PATH || '';
+    const BaseInEnv: string =
+      process.env.NODE_ENV !== 'development' && BASE && BASE !== '' ? BASE : '';
 
     const meta: ImgMeta = { ...result, size: formatBytes(byteLength) };
     // 搞一个临时的
@@ -63,7 +66,7 @@ export class PicgoProvider {
     let realPath = undefined;
     try {
       const res = await this.picgo.upload([srcPath]);
-      realPath = res[0].imgUrl;
+      realPath = `${BaseInEnv}${res[0].imgUrl}`;
     } catch (err) {
       throw err;
     } finally {

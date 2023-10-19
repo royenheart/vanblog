@@ -1,4 +1,15 @@
 # Changelog
+## BASE_PATH_FIX (2023-10-19)
+
+### 🐛 Bug Fixes | Bug 修复
+
+* 修复主页没有文章时，搜索文章产生客户端 js 错误 ([问题文件](packages/website/components/SearchCard/index.tsx))
+* Dockerfile 构建以及 docker-compose.yaml 中添加新变量 `VAN_BLOG_BASE_P`，设置应用访问路径前缀，适合于使用 nginx 等反代 Docker 服务并设置非 `/` 路径访问时，解决路径问题
+
+### ✏️ Documentation | 文档
+
+* 更新开发文档，添加新环境变量、Caddy 反代等说明
+
 ## [0.54.0](https://github.com/Mereithhh/vanblog/compare/v0.53.0...v0.54.0) (2023-06-27)
 
 

@@ -3,6 +3,8 @@
 FROM  node:18-alpine as ADMIN_BUILDER
 ENV NODE_OPTIONS='--max_old_space_size=4096 --openssl-legacy-provider'
 ENV EEE=production
+ARG VAN_BLOG_BASE_P
+ENV BASE ${VAN_BLOG_BASE_P}
 WORKDIR /app
 USER root
 RUN apk add --update python3 make g++ && rm -rf /var/cache/apk/*
@@ -20,6 +22,8 @@ FROM node:18 as SERVER_BUILDER
 ENV NODE_OPTIONS=--max_old_space_size=4096
 WORKDIR /app
 COPY ./packages/server/ .
+ARG VAN_BLOG_BASE_P
+ENV VAN_BLOG_BASE_PATH ${VAN_BLOG_BASE_P}
 RUN npm install --global pnpm@7.27.1
 RUN pnpm config set network-timeout 600000 -g
 RUN pnpm config set registry https://registry.npmmirror.com -g
@@ -38,6 +42,10 @@ COPY ./tsconfig.base.json ./
 COPY ./lerna.json ./
 COPY ./packages/website ./packages/website
 ENV isBuild t
+ARG VAN_BLOG_BASE_P
+ENV VAN_BLOG_BASE_PATH ${VAN_BLOG_BASE_P}
+ARG VAN_BLOG_ASSET_URL
+ENV VAN_BLOG_CDN_URL ${VAN_BLOG_ASSET_URL}
 ENV VAN_BLOG_ALLOW_DOMAINS "pic.mereith.com"
 ARG VAN_BLOG_BUILD_SERVER
 ENV VAN_BLOG_SERVER_URL ${VAN_BLOG_BUILD_SERVER}
@@ -102,6 +110,9 @@ ENV PORT 3001
 # 增加版本
 ARG VAN_BLOG_VERSIONS
 ENV VAN_BLOG_VERSION ${VAN_BLOG_VERSIONS}
+# 设置访问路径
+ARG VAN_BLOG_BASE_P
+ENV VAN_BLOG_BASE_PATH ${VAN_BLOG_BASE_P}
 VOLUME /app/static
 VOLUME /var/log
 VOLUME /root/.config/caddy

@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const webpack = require('webpack');
 const withBundleAnalyzer = require("@next/bundle-analyzer")({
   enabled: process.env.ANALYZE === "true",
 });
@@ -44,7 +45,37 @@ const getCdnUrl = () => {
     return {};
   }
 };
+const getBasePath = () => {
+  if (isDev) {
+    return {};
+  }
+  const BaseInEnv = process.env.VAN_BLOG_BASE_PATH || "";
+  if (BaseInEnv && BaseInEnv != "") {
+    return { basePath: BaseInEnv };
+  } else {
+    return {};
+  }
+};
+const getBaseInEnv = () => {
+  if (isDev) {
+    return {};
+  }
+  const BaseInEnv = process.env.VAN_BLOG_BASE_PATH || "";
+  if (BaseInEnv && BaseInEnv != "") {
+    return BaseInEnv;
+  } else {
+    return "";
+  }
+};
 module.exports = withBundleAnalyzer({
+  webpack: (config) => {
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        'process.env.BaseInEnv': JSON.stringify(getBaseInEnv())
+      })
+    )
+    return config;
+  },
   reactStrictMode: true,
   output: "standalone",
   experimental: {
@@ -53,6 +84,7 @@ module.exports = withBundleAnalyzer({
   images: {
     domains: getAllowDomains(),
   },
+  ...getBasePath(),
   ...getCdnUrl(),
   ...rewites,
 });

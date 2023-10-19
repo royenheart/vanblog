@@ -13,6 +13,7 @@ import { checkOrCreate, checkOrCreateByFilePath } from 'src/utils/checkFolder';
 import { rmDir } from 'src/utils/deleteFolder';
 import { readDirs } from 'src/utils/readFileList';
 import { checkOrCreateFile } from 'src/utils/checkFile';
+import { BASE_PREFIX } from 'src/utils/loadBasePath';
 @Injectable()
 export class LocalProvider {
   async saveFile(
@@ -29,7 +30,7 @@ export class LocalProvider {
       const srcPath = path.join(config.staticPath, storagePath, realName);
       // 创建文件夹。
       const byteLength = buffer.byteLength;
-      const realPath = `/static/${storagePath}/${realName}`;
+      const realPath = `${BASE_PREFIX}/static/${storagePath}/${realName}`;
       checkOrCreateByFilePath(srcPath);
       fs.writeFileSync(srcPath, buffer);
       const meta = { size: formatBytes(byteLength) };
@@ -120,11 +121,11 @@ export class LocalProvider {
   ) {
     const storagePath = StoragePath[type] || StoragePath['img'];
     const srcPath = path.join(config.staticPath, storagePath, fileName);
-    let realPath = `/static/${type}/${fileName}`;
+    let realPath = `${BASE_PREFIX}/static/${type}/${fileName}`;
 
     if (isProd()) {
       if (toRootPath) {
-        realPath = `/${fileName}`;
+        realPath = `${BASE_PREFIX}/${fileName}`;
       }
     }
     const result = imageSize(buffer);
@@ -168,7 +169,7 @@ export class LocalProvider {
       'export',
       `export-img-${dayjs().format('YYYY-MM-DD')}.zip`,
     );
-    const dstSrc = `/static/export/export-img-${dayjs().format(
+    const dstSrc = `${BASE_PREFIX}/static/export/export-img-${dayjs().format(
       'YYYY-MM-DD',
     )}.zip`;
 

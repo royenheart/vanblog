@@ -115,7 +115,7 @@ import { initJwt } from './utils/initJwt';
             expiresIn: 3600 * 24 * 7,
           },
         };
-      }
+      },
     }),
     ScheduleModule.forRoot(),
   ],
@@ -147,7 +147,7 @@ import { initJwt } from './utils/initJwt';
     PublicCustomPageController,
     PublicOldCustomPageRedirectController,
     PipelineController,
-    TokenController
+    TokenController,
   ],
   providers: [
     AppService,
@@ -184,21 +184,14 @@ import { initJwt } from './utils/initJwt';
     TokenProvider,
     TokenGuard,
     WebsiteProvider,
-    PipelineProvider
+    PipelineProvider,
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(InitMiddleware)
-      .exclude(
-        { path: '/api/admin/img/upload', method: RequestMethod.POST },
-        { path: '/api/admin/init/upload', method: RequestMethod.POST },
-        { path: '/api/admin/caddy/ask', method: RequestMethod.GET },
-      )
-      .forRoutes({
-        path: '*',
-        method: RequestMethod.ALL,
-      });
+    consumer.apply(InitMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
   }
 }

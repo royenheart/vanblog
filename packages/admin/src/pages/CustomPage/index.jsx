@@ -49,7 +49,7 @@ const columns = [
     render: (text, record, _, action) => {
       return (
         <Space>
-          <a key="view" target="_blank" rel="noreferrer" href={`/c${record.path}`}>
+          <a key="view" target="_blank" rel="noreferrer" href={`${BASE_PREFIX}/c${record.path}`}>
             查看
           </a>
 
@@ -106,7 +106,7 @@ export default function () {
           <p>多文件页面后续会演进成“文件管理”功能～</p>
           <a
             target="_blank"
-            href="https://vanblog.mereith.com/feature/advance/customPage.html"
+            href="https://vanblog.mereith.com/advanced/custom-page.html"
             rel="noreferrer"
           >
             帮助文档

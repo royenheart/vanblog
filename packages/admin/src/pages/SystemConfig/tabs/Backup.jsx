@@ -28,7 +28,7 @@ export default function (props) {
             showUploadList={false}
             name="file"
             accept=".json"
-            action="/api/admin/backup/import"
+            action={`${BASE_PREFIX}/api/admin/backup/import`}
             headers={{
               token: (() => {
                 return window.localStorage.getItem('token') || 'null';

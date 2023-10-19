@@ -220,7 +220,7 @@ export default function () {
               相关文档
             </a>
           </p>
-          <img src="/more.png" alt="more" width={200}></img>
+          <img src={`${BASE_PREFIX}/more.png`} alt="more" width={200}></img>
         </div>
       ),
       onOk: saveFn,
@@ -338,7 +338,7 @@ export default function () {
                         </div>
                       ),
                       onOk: () => {
-                        window.open(`/post/${getPathname(currObj)}`, '_blank');
+                        window.open(`${BASE_PREFIX}/post/${getPathname(currObj)}`, '_blank');
                         return true;
                       },
                       okText: '仍然访问',
@@ -346,7 +346,7 @@ export default function () {
                     });
                     return;
                   }
-                  url = `/post/${getPathname(currObj)}`;
+                  url = `${BASE_PREFIX}/post/${getPathname(currObj)}`;
                 } else {
                   url = '/about';
                 }

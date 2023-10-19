@@ -53,7 +53,7 @@ export default function () {
               <ProFormText label="名称" name="name" />
             </ModalForm>
             <Button onClick={() => {
-              window.open("/swagger", "_blank")
+              window.open(`${BASE_PREFIX}/swagger`, "_blank")
             }}>API 文档</Button>
             <Button
               onClick={() => {
@@ -97,7 +97,7 @@ export default function () {
             simple: true,
           }}
           request={async (params = {}) => {
-            let { data } = await getAllApiTokens();
+            const { data } = await getAllApiTokens();
             return {
               data,
               // success 请返回 true，

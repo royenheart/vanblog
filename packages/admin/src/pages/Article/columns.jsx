@@ -135,7 +135,7 @@ export const columns = [
                 编辑
               </a>,
               <a
-                href={`/post/${getPathname(record)}`}
+                href={`${BASE_PREFIX}/post/${getPathname(record)}`}
                 onClick={(ev) => {
                   if (record?.hidden) {
                     Modal.confirm({
@@ -159,7 +159,7 @@ export const columns = [
                         </div>
                       ),
                       onOk: () => {
-                        window.open(`/post/${getPathname(record)}`, '_blank');
+                        window.open(`${BASE_PREFIX}/post/${getPathname(record)}`, '_blank');
                         return true;
                       },
                       okText: '仍然访问',

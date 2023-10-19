@@ -66,7 +66,7 @@ export default function (props: {
         text = "请输入并搜索";
       } else {
         // 有数字，有结果
-        if (result.length) {
+        if (result && result.length) {
           text = "有结果";
         } else {
           // 可能是暂无结果或者输入中
